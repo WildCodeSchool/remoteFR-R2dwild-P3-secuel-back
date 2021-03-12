@@ -87,9 +87,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `Elan`.`Medical events`
+-- Table `Elan`.`Medical_events`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Elan`.`Medical events` (
+CREATE TABLE IF NOT EXISTS `Elan`.`Medical_events` (
   `id_med_event` INT NOT NULL AUTO_INCREMENT,
   `Date_Event` DATE NOT NULL,
   `amount_Event` FLOAT NULL DEFAULT NULL,
@@ -100,20 +100,20 @@ CREATE TABLE IF NOT EXISTS `Elan`.`Medical events` (
   `Insured_Account_id_Compte` INT NOT NULL,
   `Pros_pro_id` INT NOT NULL,
   PRIMARY KEY (`id_med_event`, `Specialities_id_speciality`, `Insured_id_Insured`, `Insured_Account_id_Compte`, `Pros_pro_id`),
-  INDEX `fk_Medical events_Specialities2_idx` (`Specialities_id_speciality` ASC) VISIBLE,
-  INDEX `fk_Medical events_Insured1_idx` (`Insured_id_Insured` ASC, `Insured_Account_id_Compte` ASC) VISIBLE,
-  INDEX `fk_Medical events_Pros2_idx` (`Pros_pro_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Medical events_Specialities2`
+  INDEX `fk_Medical_events_Specialities2_idx` (`Specialities_id_speciality` ASC) VISIBLE,
+  INDEX `fk_Medical_events_Insured1_idx` (`Insured_id_Insured` ASC, `Insured_Account_id_Compte` ASC) VISIBLE,
+  INDEX `fk_Medical_events_Pros2_idx` (`Pros_pro_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Medical_events_Specialities2`
     FOREIGN KEY (`Specialities_id_speciality`)
     REFERENCES `Elan`.`Specialities` (`id_speciality`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Medical events_Insured1`
+  CONSTRAINT `fk_Medical_events_Insured1`
     FOREIGN KEY (`Insured_id_Insured` , `Insured_Account_id_Compte`)
     REFERENCES `Elan`.`Insured` (`id_Insured` , `Account_id_Compte`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Medical events_Pros2`
+  CONSTRAINT `fk_Medical_events_Pros2`
     FOREIGN KEY (`Pros_pro_id`)
     REFERENCES `Elan`.`Pros` (`pro_id`)
     ON DELETE NO ACTION
@@ -183,13 +183,13 @@ CREATE TABLE IF NOT EXISTS `Elan`.`refund` (
   `Medical_events_id_Actes Med` INT NOT NULL,
   PRIMARY KEY (`id_refund`, `Health_insurance_id_Mutuelle`, `Medical_events_id_Actes Med`),
   INDEX `fk_Remboursement_Health_insurance1_idx` (`Health_insurance_id_Mutuelle` ASC) VISIBLE,
-  INDEX `fk_Remboursement_Medical events1_idx` (`Medical_events_id_Actes Med` ASC) VISIBLE,
+  INDEX `fk_Remboursement_Medical_events1_idx` (`Medical_events_id_Actes Med` ASC) VISIBLE,
   CONSTRAINT `fk_Remboursement_Health_insurance1`
     FOREIGN KEY (`Health_insurance_id_Mutuelle`)
     REFERENCES `Elan`.`Health_insurance` (`id_insurance`),
-  CONSTRAINT `fk_Remboursement_Medical events1`
+  CONSTRAINT `fk_Remboursement_Medical_events1`
     FOREIGN KEY (`Medical_events_id_Actes Med`)
-    REFERENCES `Elan`.`Medical events` (`id_med_event`))
+    REFERENCES `Elan`.`Medical_events` (`id_med_event`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
