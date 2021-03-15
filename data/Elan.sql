@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `Elan`.`Account` (
   `id_Compte` INT NOT NULL AUTO_INCREMENT,
   `account_name` VARCHAR(100) NOT NULL,
   `Login` VARCHAR(255) NULL DEFAULT NULL,
-  `password` VARCHAR(32) NOT NULL,
+  `Password` VARCHAR(32) NOT NULL,
   PRIMARY KEY (`id_Compte`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `Elan`.`Insured` (
   `social_security_num` INT NULL DEFAULT NULL,
   `email` VARCHAR(255) NULL DEFAULT NULL,
   `tel` VARCHAR(45) NULL DEFAULT NULL,
-  `password` VARCHAR(32) NOT NULL,
+  `Password` VARCHAR(32) NOT NULL,
   `Date_Birth` DATE NULL DEFAULT NULL,
   `Secus_id_Secus` INT NOT NULL,
   `Account_id_Compte` INT NOT NULL,

@@ -12,6 +12,8 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/account', routes.account)
 
+app.use('/insured', routes.insured)
+
 app.get('/', (req, res) => {
   res.send('Chicken World!')
 })
