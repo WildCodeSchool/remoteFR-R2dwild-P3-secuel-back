@@ -16,6 +16,10 @@ app.use('/insured', routes.insured)
 
 app.use('/health_insurance', routes.health_insurance)
 
+app.use('/pros', routes.pros)
+
+app.use('/specialities', routes.specialities)
+
 app.get('/', (req, res) => {
   res.send('Chicken World!')
 })
