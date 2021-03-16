@@ -14,6 +14,8 @@ app.use('/account', routes.account)
 
 app.use('/insured', routes.insured)
 
+app.use('/health_insurance', routes.health_insurance)
+
 app.get('/', (req, res) => {
   res.send('Chicken World!')
 })

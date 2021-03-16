@@ -72,9 +72,29 @@ router.post(
               error: err.message,
               sql: err.sql,
             });
-            // en attente de la suite validation de l objet update
           }
+          return connection.query(
+            'SELECT * FROM Account WHERE id = ?',
+            idAccount,
+            (err2, records) => {
+              if (err2) {
+                return res.status(500).json({
+                  error: err2.message,
+                  sql: err2.sql,
+                });
+              }
+              const updatedAccount= records[0];
+              const { password, ...Account } = updatedAccount;
+              // Get the host + port (localhost:3000) from the request headers
+              const host = req.get('host');
+              // Compute the full location, e.g. http://localhost:3000/api/users/132
+              // This will help the client know where the new resource can be found!
+              const location = `http://${host}${req.url}/${Account.id}`;
+              return res.status(201).set("Location", location).json(Account);
+            }
+          )
         })
     }
+    )
 
 module.exports = router
