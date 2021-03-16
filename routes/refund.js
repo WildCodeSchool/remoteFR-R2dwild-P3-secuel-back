@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', (req, res) => {
   connection.query(
-    'SELECT * FROM Specialities',
+    'SELECT * FROM refund',
     [req.params.id],
     (err, results) => {
       if (err) {
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM Specialities WHERE id_speciality = ?',
+    'SELECT * FROM refund WHERE id_refund = ?',
     [req.params.id],
     (err, results) => {
       if (err) {
@@ -37,16 +37,16 @@ router.post(
   '/',
 
   (req, res) => {
-    const { speciality_name } = req.body
+    const { Amount_Refund } = req.body
     return connection.query(
-      'INSERT INTO specialities(speciality_name) VALUES(?)',
-      [speciality_name],
+      'INSERT INTO refund(Amount_Refund) VALUES(?)',
+      [Amount_Refund],
       err => {
         if (err) {
           console.log(err)
-          return res.status(500).send('Error saving speciality')
+          return res.status(500).send('Error saving refund')
         }
-        return res.status(200).send('Successfully saved speciality')
+        return res.status(200).send('Successfully saved refund')
       }
     )
   }
@@ -57,8 +57,8 @@ router.put('/:id', (req, res) => {
   const newSpe = req.body
 
   return connection.query(
-    'UPDATE specialities SET ? WHERE id_speciality = ?',
-    [newSpe, idSpe],
+    'UPDATE refund SET ? WHERE id_refund = ?',
+    [newRef, idRef],
     err2 => {
       if (err2) {
         return res.status(500).json({
@@ -68,8 +68,8 @@ router.put('/:id', (req, res) => {
       }
 
       connection.query(
-        'SELECT * FROM specialities WHERE id_speciality = ?',
-        idSpe,
+        'SELECT * FROM refund WHERE id_refund = ?',
+        idRef,
         (err3, records) => {
           if (err3) {
             res.status(500).json({
@@ -78,14 +78,14 @@ router.put('/:id', (req, res) => {
             })
           }
 
-          const updatedSpe = records[0]
-          const { ...specialities } = updatedSpe
+          const updatedRefund = records[0]
+          const { ...refund } = updatedRefund
           // Get the host + port (localhost:3000) from the request headers
           const host = req.get('host')
           // Compute the full location, e.g. http://localhost:3000/api/users/132
           // This will help the client know where the new resource can be found!
-          const location = `http://${host}${req.url}/${specialities.id}`
-          return res.status(201).set('Location', location).json(specialities)
+          const location = `http://${host}${req.url}/${refund.id}`
+          return res.status(201).set('Location', location).json(refund)
         }
       )
     }
@@ -94,14 +94,14 @@ router.put('/:id', (req, res) => {
 //delete 
 router.delete('/:id', (req, res) => {
   connection.query(
-    'DELETE FROM specialities WHERE id_speciality = ?',
+    'DELETE FROM refund WHERE id_refund = ?',
     [req.params.id],
     (err) => {
       if (err) {
         console.log(err)
         res.status(500).send('Error deleting data')
       } else {
-        res.status(200).send("Speciality sucessfuly deleted !")
+        res.status(200).send("refund sucessfuly deleted !")
       }
     }
   )
