@@ -20,53 +20,52 @@ router.post(
   [
     check('lastname').isLength({ min: 3 }),
     check('firstname').isLength({ min: 3 }),
-    check('social_security_num').isInt({ min: 17, max: 17 }),
+    check('social_security_num').isLength({ min: 3 }),
     check('email').isEmail(),
     check('tel').isLength({ min: 10 }),
     check('Password').isLength({ min: 10 }),
-    check('Date_Birth').isISO8601()
+    check('birth_date').isISO8601()
   ],
   (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })
     }
-    const { Account_name, Login, Password } = req.body
+    const {
+      lastname,
+      firstname,
+      social_security_num,
+      email,
+      tel,
+      Password,
+      birth_date,
+      Account_id_Compte
+    } = req.body
     return connection.query(
-      'INSERT INTO Insured(lastname, firstname, social_security_num, email, tel, password, Date_Birth) VALUES(?,?,?,?,?,?,?)',
+      'INSERT INTO Insured(lastname, firstname, social_security_num, email, tel, Password, birth_date, Account_id_Compte) VALUES(?,?,?,?,?,?,?,?)',
       [
         lastname,
         firstname,
         social_security_num,
         email,
         tel,
-        password,
-        Date_Birth
+        Password,
+        birth_date,
+        Account_id_Compte
       ],
       err => {
         if (err) {
-          console.log(err)
-          return res.status(500).send('Error saving Insured')
-        }
-        return res.status(200).send('Successfully saved Insured')
-      }
-    )
-  }
-)
-
-router.put(
-  '/',
+router.put( '/',
   [
     check('lastname').isLength({ min: 3 }),
     check('firstname').isLength({ min: 3 }),
-    check('social_security_num').isInt({ min: 17, max: 17 }),
+    check('social_security_num').isInt({ min: 13, max: 13 }),
     check('email').isEmail(),
     check('tel').isInt({ min: 10, max: 10 }),
     check('Password').isLength({ min: 10 }),
-    check('Date_Birth').isISO8601()
+    check('birth_date').isISO8601()
   ],
-  (req, res) => {
-    const idInsured = req.params.id
+  (req, res) => {const idInsured = req.params.id
     const newInsured = req.body
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -112,6 +111,8 @@ router.put(
       }
     )
   }
+)
+    
 )
 
 // route for delete insured
