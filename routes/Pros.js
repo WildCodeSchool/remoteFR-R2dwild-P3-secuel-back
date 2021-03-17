@@ -15,6 +15,21 @@ router.get('/', (req, res) => {
   })
 })
 
+router.get('/:id', (req, res) => {
+  connection.query(
+    'SELECT * FROM pros WHERE pro_id = ?',
+    [req.params.id],
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data')
+      } else {
+        res.status(200).json(results)
+      }
+    }
+  )
+})
+
 router.post('/', (req, res) => {
   const { pro_name } = req.body
   return connection.query(
@@ -71,5 +86,19 @@ router.put('/:id', (req, res) => {
     }
   )
 })
-
+//delete 
+router.delete('/:id', (req, res) => {
+  connection.query(
+    'DELETE FROM pros WHERE pro_id = ?',
+    [req.params.id],
+    (err) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error deleting data')
+      } else {
+        res.status(200).send("Professionnal sucessfuly deleted !")
+      }
+    }
+  )
+})
 module.exports = router

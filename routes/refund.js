@@ -37,10 +37,21 @@ router.post(
   '/',
 
   (req, res) => {
-    const { Amount_Refund } = req.body
+    const { 
+      
+      Amount_Refund,
+    Date_Refund,
+  Health_insurance_id_Mutuelle,
+  Medical_events_id_Actes
+ } = req.body
     return connection.query(
-      'INSERT INTO refund(Amount_Refund) VALUES(?)',
-      [Amount_Refund],
+      'INSERT INTO refund( Amount_Refund, Date_Refund, Health_insurance_id_Mutuelle, Medical_events_id_Actes) VALUES(?, ?, ?, ?)',
+      [
+        Amount_Refund,
+        Date_Refund,
+        Health_insurance_id_Mutuelle,
+        Medical_events_id_Actes
+      ],
       err => {
         if (err) {
           console.log(err)

@@ -20,6 +20,8 @@ app.use('/pros', routes.pros)
 
 app.use('/specialities', routes.specialities)
 
+app.use('/refund', routes.refund)
+
 app.get('/', (req, res) => {
   res.send('Chicken World!')
 })
