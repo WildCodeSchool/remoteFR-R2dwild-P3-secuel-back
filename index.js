@@ -20,6 +20,9 @@ app.use('/pros', routes.pros)
 
 app.use('/specialities', routes.specialities)
 
+app.use('/notifications', routes.notifications)
+app.use('/notif_insured', routes.notif_insured)
+
 app.get('/', (req, res) => {
   res.send('Chicken World!')
 })
