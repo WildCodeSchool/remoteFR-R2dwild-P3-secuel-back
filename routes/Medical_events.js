@@ -3,14 +3,15 @@ const connection = require('../config')
 const router = express.Router()
 //const { check, validationResult } = require('express-validator')
 
+// get table Medical_events
 router.get('/', (req, res) => {
   connection.query(
-    'SELECT * FROM Specialities',
+    'SELECT * FROM Medical_events',
     [req.params.id],
     (err, results) => {
       if (err) {
         console.log(err)
-        res.status(500).send('Error retrieving data')
+        res.status(500).send('Error retrieving data table Medical_events')
       } else {
         res.status(200).json(results)
       }
@@ -18,14 +19,15 @@ router.get('/', (req, res) => {
   )
 })
 
+// get one medical event with id
 router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM Specialities WHERE id_speciality = ?',
+    'SELECT * FROM Medical_events WHERE id_med_event = ?',
     [req.params.id],
     (err, results) => {
       if (err) {
         console.log(err)
-        res.status(500).send('Error retrieving data')
+        res.status(500).send('Error retrieving data Medical_events_ID')
       } else {
         res.status(200).json(results)
       }
@@ -33,24 +35,20 @@ router.get('/:id', (req, res) => {
   )
 })
 
-router.post(
-  '/',
-
-  (req, res) => {
-    const { speciality_name } = req.body
-    return connection.query(
-      'INSERT INTO specialities(speciality_name) VALUES(?)',
-      [speciality_name],
-      err => {
-        if (err) {
-          console.log(err)
-          return res.status(500).send('Error saving speciality')
-        }
-        return res.status(200).send('Successfully saved speciality')
+router.post('/', (req, res) => {
+  const { speciality_name } = req.body
+  return connection.query(
+    'INSERT INTO specialities(speciality_name) VALUES(?)',
+    [speciality_name],
+    err => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send('Error saving speciality')
       }
-    )
-  }
-)
+      return res.status(200).send('Successfully saved speciality')
+    }
+  )
+})
 
 router.put('/:id', (req, res) => {
   const idSpe = req.params.id
@@ -91,17 +89,17 @@ router.put('/:id', (req, res) => {
     }
   )
 })
-//delete 
+//delete
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM specialities WHERE id_speciality = ?',
     [req.params.id],
-    (err) => {
+    err => {
       if (err) {
         console.log(err)
         res.status(500).send('Error deleting data')
       } else {
-        res.status(200).send("Speciality sucessfuly deleted !")
+        res.status(200).send('Speciality sucessfuly deleted !')
       }
     }
   )

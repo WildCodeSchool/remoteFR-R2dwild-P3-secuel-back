@@ -89,4 +89,20 @@ router.put('/', [check('insurance_name').isLength({ min: 5 })], (req, res) => {
   )
 })
 
+// route for delete insurance
+router.delete('/:id', (req, res) => {
+  connection.query(
+    'DELETE FROM Health_insurance WHERE id_insurance = ?',
+    [req.params.id],
+    err => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error deleting insurance data')
+      } else {
+        res.status(200).send('insurance sucessfuly deleted !')
+      }
+    }
+  )
+})
+
 module.exports = router

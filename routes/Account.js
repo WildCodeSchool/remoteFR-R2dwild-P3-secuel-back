@@ -45,6 +45,7 @@ router.post(
   }
 )
 
+// route for modification
 router.put(
   '/',
   [
@@ -100,5 +101,21 @@ router.put(
     )
   }
 )
+
+// route for delete account
+router.delete('/:id', (req, res) => {
+  connection.query(
+    'DELETE FROM account WHERE id_Compte = ?',
+    [req.params.id],
+    err => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error deleting account data')
+      } else {
+        res.status(200).send('account sucessfuly deleted !')
+      }
+    }
+  )
+})
 
 module.exports = router

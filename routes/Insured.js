@@ -20,38 +20,28 @@ router.post(
   [
     check('lastname').isLength({ min: 3 }),
     check('firstname').isLength({ min: 3 }),
-    check('social_security_num').isLength({ min: 3 }),
+    check('social_security_num').isInt({ min: 17, max: 17 }),
     check('email').isEmail(),
     check('tel').isLength({ min: 10 }),
     check('Password').isLength({ min: 10 }),
-    check('birth_date').isISO8601()
+    check('Date_Birth').isISO8601()
   ],
   (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })
     }
-    const {
-      lastname,
-      firstname,
-      social_security_num,
-      email,
-      tel,
-      Password,
-      birth_date,
-      Account_id_Compte
-    } = req.body
+    const { Account_name, Login, Password } = req.body
     return connection.query(
-      'INSERT INTO Insured(lastname, firstname, social_security_num, email, tel, Password, birth_date, Account_id_Compte) VALUES(?,?,?,?,?,?,?,?)',
+      'INSERT INTO Insured(lastname, firstname, social_security_num, email, tel, password, Date_Birth) VALUES(?,?,?,?,?,?,?)',
       [
         lastname,
         firstname,
         social_security_num,
         email,
         tel,
-        Password,
-        birth_date,
-        Account_id_Compte
+        password,
+        Date_Birth
       ],
       err => {
         if (err) {
@@ -73,7 +63,7 @@ router.put(
     check('email').isEmail(),
     check('tel').isInt({ min: 10, max: 10 }),
     check('Password').isLength({ min: 10 }),
-    check('birth_date').isISO8601()
+    check('Date_Birth').isISO8601()
   ],
   (req, res) => {
     const idInsured = req.params.id
@@ -123,5 +113,21 @@ router.put(
     )
   }
 )
+
+// route for delete insured
+router.delete('/:id', (req, res) => {
+  connection.query(
+    'DELETE FROM Insured WHERE id_Insured = ?',
+    [req.params.id],
+    err => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error deleting insured data')
+      } else {
+        res.status(200).send('insured sucessfuly deleted !')
+      }
+    }
+  )
+})
 
 module.exports = router
