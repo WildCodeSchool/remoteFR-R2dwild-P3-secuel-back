@@ -43,8 +43,8 @@ router.post('/', (req, res) => {
     amount_Event,
     secu_status,
     insurance_status,
-    Specialities_id_speciality,
     // list of foreign key in medical event
+    Specialities_id_speciality,
     Insured_id_Insured,
     Insured_Account_id_Compte,
     Pros_pro_id
