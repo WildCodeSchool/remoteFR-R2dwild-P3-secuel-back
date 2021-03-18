@@ -5,6 +5,16 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator')
 
 router.get('/', (req, res) => {
+  connection.query('SELECT * from Account', (err, results) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send('Error retrieving data')
+    } else {
+      res.status(200).json(results)
+    }
+  })
+})
+router.get('/:id', (req, res) => {
   connection.query('SELECT * from Account', [req.params.id], (err, results) => {
     if (err) {
       console.log(err)
@@ -47,7 +57,7 @@ router.post(
 
 // route for modification
 router.put(
-  '/',
+  '/:id',
   [
     check('Account_name').isLength({ min: 8 }),
     check('Password').isLength({ min: 10 }),
@@ -61,7 +71,7 @@ router.put(
       return res.status(422).json({ errors: errors.array() })
     }
     return connection.query(
-      'UPDATE Account SET ? WHERE id=?',
+      'UPDATE Account SET ? WHERE id_Compte=?',
       [newAccount, idAccount],
       err => {
         if (err) {
@@ -78,7 +88,7 @@ router.put(
           })
         }
         return connection.query(
-          'SELECT * FROM Account WHERE id = ?',
+          'SELECT * FROM Account WHERE id_Compte = ?',
           idAccount,
           (err2, records) => {
             if (err2) {
@@ -105,7 +115,7 @@ router.put(
 // route for delete account
 router.delete('/:id', (req, res) => {
   connection.query(
-    'DELETE FROM account WHERE id_Compte = ?',
+    'DELETE FROM Account WHERE id_Compte = ?',
     [req.params.id],
     err => {
       if (err) {

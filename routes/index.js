@@ -7,6 +7,7 @@ const notifications = require('./Notifications')
 const notif_insured = require('./notif_insured')
 const refund = require('./refund')
 const medical_events = require('./Medical_events')
+const pros_speciality = require('./Pros_speciality')
 
 module.exports = {
   insured,
@@ -16,6 +17,7 @@ module.exports = {
   specialities,
   notifications,
   notif_insured,
-  refund
-  medical_events
+  refund,
+  medical_events,
+  pros_speciality
 }

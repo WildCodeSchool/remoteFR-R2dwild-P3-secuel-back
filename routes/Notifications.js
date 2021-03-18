@@ -101,7 +101,7 @@ router.delete('/:id', (req, res) => {
         console.log(err)
         res.status(500).send('Error deleting data')
       } else {
-        res.status(200).send('Speciality sucessfuly deleted !')
+        res.status(200).send('Notification sucessfuly deleted !')
       }
     }
   )

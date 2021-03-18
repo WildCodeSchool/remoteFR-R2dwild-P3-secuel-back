@@ -5,6 +5,16 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator')
 
 router.get('/', (req, res) => {
+  connection.query('SELECT * from Insured', (err, results) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send('Error retrieving data')
+    } else {
+      res.status(200).json(results)
+    }
+  })
+})
+router.get('/:id', (req, res) => {
   connection.query('SELECT * from Insured', [req.params.id], (err, results) => {
     if (err) {
       console.log(err)
@@ -14,8 +24,6 @@ router.get('/', (req, res) => {
     }
   })
 })
-
-
 
 router.post(
   '/',
@@ -57,31 +65,42 @@ router.post(
       ],
       err => {
         if (err) {
-router.put( '/',
+          console.log(err)
+          return res.status(500).send('Error saving insured')
+        }
+        return res.status(200).send('Successfully saved insured')
+      }
+    )
+  }
+)
+
+router.put(
+  '/:id',
   [
     check('lastname').isLength({ min: 3 }),
     check('firstname').isLength({ min: 3 }),
-    check('social_security_num').isInt({ min: 13, max: 13 }),
+    check('social_security_num').isLength({ min: 3 }),
     check('email').isEmail(),
-    check('tel').isInt({ min: 10, max: 10 }),
+    check('tel').isLength({ min: 10 }),
     check('Password').isLength({ min: 10 }),
     check('birth_date').isISO8601()
   ],
-  (req, res) => {const idInsured = req.params.id
+  (req, res) => {
+    const idInsured = req.params.id
     const newInsured = req.body
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() })
     }
     return connection.query(
-      'UPDATE Insured SET ? WHERE id=?',
+      'UPDATE Insured SET ? WHERE id_Insured=?',
       [newInsured, idInsured],
       err => {
         if (err) {
           // MySQL reports a duplicate entry -> 409 Conflict
           if (err.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({
-              error: 'Email already exists'
+              error: 'ID already exists'
             })
           }
           // Other error codes -> 500
@@ -91,7 +110,7 @@ router.put( '/',
           })
         }
         return connection.query(
-          'SELECT * FROM Insured WHERE id = ?',
+          'SELECT * FROM Insured WHERE id_Insured = ?',
           idInsured,
           (err2, records) => {
             if (err2) {
@@ -113,7 +132,6 @@ router.put( '/',
       }
     )
   }
-)
 )
 
 // route for delete insured
