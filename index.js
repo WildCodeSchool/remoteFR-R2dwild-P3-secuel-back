@@ -22,6 +22,8 @@ app.use('/specialities', routes.specialities)
 
 app.use('/notifications', routes.notifications)
 app.use('/notif_insured', routes.notif_insured)
+app.use('/refund', routes.refund)
+app.use('/medical_events', routes.medical_events)
 
 app.get('/', (req, res) => {
   res.send('Chicken World!')

@@ -179,15 +179,15 @@ CREATE TABLE IF NOT EXISTS `Elan`.`refund` (
   `Amount_Refund` FLOAT NULL DEFAULT NULL,
   `Date_Refund` DATE NULL DEFAULT NULL,
   `Health_insurance_id_Mutuelle` INT NOT NULL,
-  `Medical_events_id_Actes Med` INT NOT NULL,
-  PRIMARY KEY (`id_refund`, `Health_insurance_id_Mutuelle`, `Medical_events_id_Actes Med`),
+  `Medical_events_id_Actes` INT NOT NULL,
+  PRIMARY KEY (`id_refund`, `Health_insurance_id_Mutuelle`, `Medical_events_id_Actes`),
   INDEX `fk_Remboursement_Health_insurance1_idx` (`Health_insurance_id_Mutuelle` ASC) VISIBLE,
-  INDEX `fk_Remboursement_Medical_events1_idx` (`Medical_events_id_Actes Med` ASC) VISIBLE,
+  INDEX `fk_Remboursement_Medical_events1_idx` (`Medical_events_id_Actes` ASC) VISIBLE,
   CONSTRAINT `fk_Remboursement_Health_insurance1`
     FOREIGN KEY (`Health_insurance_id_Mutuelle`)
     REFERENCES `Elan`.`Health_insurance` (`id_insurance`),
   CONSTRAINT `fk_Remboursement_Medical_events1`
-    FOREIGN KEY (`Medical_events_id_Actes Med`)
+    FOREIGN KEY (`Medical_events_id_Actes`)
     REFERENCES `Elan`.`Medical_events` (`id_med_event`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -196,3 +196,4 @@ DEFAULT CHARACTER SET = utf8;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
