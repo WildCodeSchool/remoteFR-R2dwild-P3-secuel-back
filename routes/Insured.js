@@ -112,7 +112,6 @@ router.put( '/',
     )
   }
 )
-    
 )
 
 // route for delete insured
