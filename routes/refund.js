@@ -29,38 +29,34 @@ router.get('/:id', (req, res) => {
   )
 })
 
-router.post(
-  '/',
-
-  (req, res) => {
-    const {
+router.post('/', (req, res) => {
+  const {
+    Amount_Refund,
+    Date_Refund,
+    Health_insurance_id_Mutuelle,
+    Medical_events_id_Actes
+  } = req.body
+  return connection.query(
+    'INSERT INTO refund( Amount_Refund, Date_Refund, Health_insurance_id_Mutuelle, Medical_events_id_Actes) VALUES(?, ?, ?, ?)',
+    [
       Amount_Refund,
       Date_Refund,
       Health_insurance_id_Mutuelle,
       Medical_events_id_Actes
-    } = req.body
-    return connection.query(
-      'INSERT INTO refund( Amount_Refund, Date_Refund, Health_insurance_id_Mutuelle, Medical_events_id_Actes) VALUES(?, ?, ?, ?)',
-      [
-        Amount_Refund,
-        Date_Refund,
-        Health_insurance_id_Mutuelle,
-        Medical_events_id_Actes
-      ],
-      err => {
-        if (err) {
-          console.log(err)
-          return res.status(500).send('Error saving refund')
-        }
-        return res.status(200).send('Successfully saved refund')
+    ],
+    err => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send('Error saving refund')
       }
-    )
-  }
-)
+      return res.status(200).send('Successfully saved refund')
+    }
+  )
+})
 
 router.put('/:id', (req, res) => {
-  const idSpe = req.params.id
-  const newSpe = req.body
+  const idRef = req.params.id
+  const newRef = req.body
 
   return connection.query(
     'UPDATE refund SET ? WHERE id_refund = ?',

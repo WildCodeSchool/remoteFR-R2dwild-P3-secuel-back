@@ -32,24 +32,20 @@ router.get('/:id/:id', (req, res) => {
   )
 })
 
-router.post(
-  '/',
-
-  (req, res) => {
-    const { speciality_id, pro_id } = req.body
-    return connection.query(
-      'INSERT INTO Pros_Specialty(speciality_id, pro_id) VALUES(?, ?)',
-      [speciality_id, pro_id],
-      err => {
-        if (err) {
-          console.log(err)
-          return res.status(500).send('Error saving pro_spe')
-        }
-        return res.status(200).send('Successfully saved pro_spe')
+router.post('/', (req, res) => {
+  const { speciality_id, pro_id } = req.body
+  return connection.query(
+    'INSERT INTO Pros_Specialty(speciality_id, pro_id) VALUES(?, ?)',
+    [speciality_id, pro_id],
+    err => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send('Error saving pro_spe')
       }
-    )
-  }
-)
+      return res.status(200).send('Successfully saved pro_spe')
+    }
+  )
+})
 
 /*router.put('/:id/:id', (req, res) => {
   const idPro = parseInt(req.params.id)
