@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', (req, res) => {
   connection.query(
-    'SELECT * FROM notif_insured AS ni JOIN Insured AS i ON ni.Insured_id_Assure= i.id_insured JOIN Notifications AS n ON ni.Notifications_id_Notification = n.id_Notification ',
+    'SELECT * FROM notif_insured AS ni JOIN Insured AS i ON ni.id_notif_insured= i.id_insured JOIN Notifications AS n ON ni.notifications_id_Notification = n.id_Notification ',
     (err, results) => {
       if (err) {
         console.log(err)
@@ -17,10 +17,10 @@ router.get('/', (req, res) => {
   )
 })
 
-router.get('/:id/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM notif_insured AS ni WHERE ni.Notifications_id_Notification = ? AND ni.Insured_id_Assure= ?',
-    [req.params.id, req.params.id],
+    'SELECT * FROM notif_insured AS ni WHERE ni.id_notif_insured = ? ',
+    [req.params.id],
     (err, results) => {
       if (err) {
         console.log(err)
@@ -36,10 +36,20 @@ router.post(
   '/',
 
   (req, res) => {
-    const { Notifications_id_Notification, Insured_id_Assure } = req.body
+    const {
+      notifications_id_Notification,
+      insured_id_Insured,
+      insured_Account_id_Compte,
+      Status
+    } = req.body
     return connection.query(
-      'INSERT INTO notif_insured(Notifications_id_Notification, Insured_id_Assure) VALUES(?,?)',
-      [Notifications_id_Notification, Insured_id_Assure],
+      'INSERT INTO notif_insured(id_notif_insured) VALUES(?,?,?,?)',
+      [
+        notifications_id_Notification,
+        insured_id_Insured,
+        insured_Account_id_Compte,
+        Status
+      ],
       err => {
         if (err) {
           console.log(err)
@@ -51,15 +61,13 @@ router.post(
   }
 )
 
-router.put('/:id/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   const idNotifIns = Number(req.params.id)
   const newNotifIns = req.body
-  const idInsured = Number(req.params.id)
-  const newidInsured = req.bod
 
   return connection.query(
-    'UPDATE notif_insured SET (?,?) WHERE Notifications_id_Notification = ? AND Insured_id_Assure= ?',
-    [newNotifIns, idNotifIns, idInsured, newidInsured],
+    'UPDATE notif_insured SET ? WHERE id_notif_insured= ?',
+    [newNotifIns, idNotifIns],
     err2 => {
       if (err2) {
         return res.status(500).json({
@@ -69,7 +77,7 @@ router.put('/:id/:id', (req, res) => {
       }
 
       connection.query(
-        'SELECT * FROM notif_insured WHERE Notifications_id_Notification = ? AND Insured_id_Assure= ?',
+        'SELECT * FROM notif_insured WHERE id_notif_insured= ?',
         idNotifIns,
         (err3, records) => {
           if (err3) {
@@ -93,10 +101,10 @@ router.put('/:id/:id', (req, res) => {
   )
 })
 //delete
-router.delete('/:id/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   connection.query(
-    'DELETE FROM notif_insured WHERE Notifications_id_Notification = ? AND Insured_id_Assure= ?',
-    [req.params.id, req.params.id],
+    'DELETE FROM notif_insured WHERE id_notif_insured = ?',
+    [req.params.id],
     err => {
       if (err) {
         console.log(err)

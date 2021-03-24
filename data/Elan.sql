@@ -136,18 +136,24 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `Elan`.`Pros_Specialty`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Elan`.`Pros_Specialty` (
-  `speciality_id` INT NOT NULL,
-  `pro_id` INT NOT NULL,
-  PRIMARY KEY (`speciality_id`, `pro_id`),
-  INDEX `fk_specialite_has_Professionnels_Professionnels1_idx` (`pro_id` ASC) VISIBLE,
-  INDEX `fk_specialite_has_Professionnels_specialite1_idx` (`speciality_id` ASC) VISIBLE,
-  CONSTRAINT `fk_specialite_has_Professionnels_Professionnels1`
-    FOREIGN KEY (`pro_id`)
-    REFERENCES `Elan`.`Pros` (`pro_id`),
-  CONSTRAINT `fk_specialite_has_Professionnels_specialite1`
-    FOREIGN KEY (`speciality_id`)
-    REFERENCES `Elan`.`Specialities` (`id_speciality`))
+CREATE TABLE IF NOT EXISTS `elan`.`Pros_Speciality` (
+  `id_Pros_Speciality` INT NOT NULL AUTO_INCREMENT,
+  `pros_pro_id` INT NOT NULL,
+  `specialities_id_speciality` INT NOT NULL,
+  `Status` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id_Pros_Speciality`),
+  INDEX `fk_pros_has_specialities_specialities1_idx` (`specialities_id_speciality` ASC) VISIBLE,
+  INDEX `fk_pros_has_specialities_pros1_idx` (`pros_pro_id` ASC) VISIBLE,
+  CONSTRAINT `fk_pros_has_specialities_pros1`
+    FOREIGN KEY (`pros_pro_id`)
+    REFERENCES `elan`.`pros` (`pro_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_pros_has_specialities_specialities1`
+    FOREIGN KEY (`specialities_id_speciality`)
+    REFERENCES `elan`.`specialities` (`id_speciality`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -155,18 +161,25 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `Elan`.`notif_insured`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Elan`.`notif_insured` (
-  `Notifications_id_Notification` INT NOT NULL,
-  `Insured_id_Assure` INT NOT NULL,
-  PRIMARY KEY (`Notifications_id_Notification`, `Insured_id_Assure`),
-  INDEX `fk_Notifications_has_Insured_Insured1_idx` (`Insured_id_Assure` ASC) VISIBLE,
-  INDEX `fk_Notifications_has_Insured_Notifications1_idx` (`Notifications_id_Notification` ASC) VISIBLE,
-  CONSTRAINT `fk_Notifications_has_Insured_Insured1`
-    FOREIGN KEY (`Insured_id_Assure`)
-    REFERENCES `Elan`.`Insured` (`id_Insured`),
-  CONSTRAINT `fk_Notifications_has_Insured_Notifications1`
-    FOREIGN KEY (`Notifications_id_Notification`)
-    REFERENCES `Elan`.`Notifications` (`id_Notification`))
+CREATE TABLE IF NOT EXISTS `elan`.`notif_insured` (
+  `id_notif_insured` INT NOT NULL AUTO_INCREMENT,
+  `notifications_id_Notification` INT NOT NULL,
+  `insured_id_Insured` INT NOT NULL,
+  `insured_Account_id_Compte` INT NOT NULL,
+  `Status` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id_notif_insured`),
+  INDEX `fk_notifications_has_insured_insured1_idx` (`insured_id_Insured` ASC, `insured_Account_id_Compte` ASC) VISIBLE,
+  INDEX `fk_notifications_has_insured_notifications1_idx` (`notifications_id_Notification` ASC) VISIBLE,
+  CONSTRAINT `fk_notifications_has_insured_notifications1`
+    FOREIGN KEY (`notifications_id_Notification`)
+    REFERENCES `elan`.`notifications` (`id_Notification`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_notifications_has_insured_insured1`
+    FOREIGN KEY (`insured_id_Insured` , `insured_Account_id_Compte`)
+    REFERENCES `elan`.`insured` (`id_Insured` , `Account_id_Compte`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

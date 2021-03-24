@@ -17,10 +17,10 @@ router.get('/', (req, res) => {
   )
 })
 
-router.get('/:id/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM Pros_Specialty as ps WHERE ps.speciality_id = ? AND ps.pro_id = ?',
-    [req.params.id, req.params.id],
+    'SELECT * FROM Pros_Specialty as ps WHERE ps.id_Pros_Speciality = ? ',
+    [req.params.id],
     (err, results) => {
       if (err) {
         console.log(err)
@@ -33,10 +33,10 @@ router.get('/:id/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const { speciality_id, pro_id } = req.body
+  const { pro_id, id_speciality, Status } = req.body
   return connection.query(
-    'INSERT INTO Pros_Specialty(speciality_id, pro_id) VALUES(?, ?)',
-    [speciality_id, pro_id],
+    'INSERT INTO Pros_Specialty(id_Pros_Speciality, pro_id, id_speciality, Status`) VALUES(?, ?, ?)',
+    [pro_id, id_speciality, Status],
     err => {
       if (err) {
         console.log(err)
@@ -47,15 +47,13 @@ router.post('/', (req, res) => {
   )
 })
 
-/*router.put('/:id/:id', (req, res) => {
-  const idPro = parseInt(req.params.id)
-  const idSpe = parseInt(req.params.id)
-  const newPro = req.body
-  const newSpe = req.body
-  console.log(idPro + idSpe)
+router.put('/:id', (req, res) => {
+  const idProSpe = parseInt(req.params.id)
+  const newProSpe = req.body
+
   return connection.query(
-    'UPDATE Pros_Specialty SET speciality_id=? ,pro_id=? WHERE speciality_id = ? AND pro_id = ?',
-    [newSpe, newPro, idSpe, idPro],
+    'UPDATE Pros_Specialty SET ? WHERE id_Pros_Speciality = ?',
+    [newProSpe, idProSpe],
     err2 => {
       if (err2) {
         return res.status(500).json({
@@ -64,10 +62,9 @@ router.post('/', (req, res) => {
         })
       }
 
-      connection.query(
-        'SELECT * FROM Pros_Specialty  WHERE speciality_id = ? AND pro_id = ? ',
-        idSpe,
-        idPro,
+      return connection.query(
+        'SELECT * FROM Pros_Specialty  WHERE speciality_id = ?',
+        idProSpe,
         (err3, records) => {
           if (err3) {
             res.status(500).json({
@@ -76,25 +73,25 @@ router.post('/', (req, res) => {
             })
           }
 
-          const updatedSpePro = records[0]
-          const { ...Pros_Specialty } = updatedSpePro
+          const updatedProSpe = records[0]
+          const { ...Pros_Specialty } = updatedProSpe
           // Get the host + port (localhost:3000) from the request headers
           const host = req.get('host')
           // Compute the full location, e.g. http://localhost:3000/api/users/132
           // This will help the client know where the new resource can be found!
-          const location = `http://${host}${req.url}/${Pros_Specialty.id.id}`
+          const location = `http://${host}${req.url}/${Pros_Specialty.id}`
           return res.status(201).set('Location', location).json(Pros_Specialty)
         }
       )
     }
   )
 })
-*/
+
 //delete
-router.delete('/:id/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   connection.query(
-    'DELETE FROM Pros_Specialty WHERE speciality_id = ? AND pro_id= ?',
-    [req.params.id, req.params.id],
+    'DELETE FROM Pros_Specialty WHERE id_Pros_Speciality = ?',
+    [req.params.id],
     err => {
       if (err) {
         console.log(err)
