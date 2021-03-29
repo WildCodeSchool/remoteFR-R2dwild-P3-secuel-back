@@ -15,22 +15,26 @@ router.get('/', (req, res) => {
   })
 })
 router.get('/:id', (req, res) => {
-  connection.query('SELECT * from Account', [req.params.id], (err, results) => {
-    if (err) {
-      console.log(err)
-      res.status(500).send('Error retrieving data')
-    } else {
-      res.status(200).json(results)
+  connection.query(
+    'SELECT * from Account WHERE id_Compte=?',
+    [req.params.id],
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data')
+      } else {
+        res.status(200).json(results)
+      }
     }
-  })
+  )
 })
 
 router.post(
   '/',
   [
-    check('Account_name').isLength({ min: 8 }),
+    check('Account_name').isLength({ min: 5 }),
     // account name must be at least 8 chars long
-    check('Password').isLength({ min: 10 }),
+    check('Password').isLength({ min: 6}),
     // let's assume a password should be 10 chars long
     check('Login').isEmail()
     // to check it's really an email adress
