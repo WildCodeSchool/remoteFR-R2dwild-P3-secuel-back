@@ -1,7 +1,7 @@
 const express = require('express')
-const connection = require('../config')
 const router = express.Router()
-//const { check, validationResult } = require('express-validator')
+
+const connection = require('../config')
 
 router.get('/', (req, res) => {
   connection.query(
@@ -50,7 +50,6 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   const idProSpe = parseInt(req.params.id)
   const newProSpe = req.body
-
   return connection.query(
     'UPDATE Pros_Specialty SET ? WHERE id_Pros_Speciality = ?',
     [newProSpe, idProSpe],
@@ -61,7 +60,6 @@ router.put('/:id', (req, res) => {
           sql: err2.sql
         })
       }
-
       return connection.query(
         'SELECT * FROM Pros_Specialty  WHERE speciality_id = ?',
         idProSpe,
@@ -72,7 +70,6 @@ router.put('/:id', (req, res) => {
               sql: err3.sql
             })
           }
-
           const updatedProSpe = records[0]
           const { ...Pros_Specialty } = updatedProSpe
           // Get the host + port (localhost:3000) from the request headers
@@ -87,7 +84,6 @@ router.put('/:id', (req, res) => {
   )
 })
 
-//delete
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM Pros_Specialty WHERE id_Pros_Speciality = ?',

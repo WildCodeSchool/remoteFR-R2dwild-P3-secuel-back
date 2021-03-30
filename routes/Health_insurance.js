@@ -1,8 +1,8 @@
 const express = require('express')
-const connection = require('../config')
 const router = express.Router()
-
 const { check, validationResult } = require('express-validator')
+
+const connection = require('../config')
 
 router.get('/', (req, res) => {
   connection.query('SELECT * from Health_insurance', (err, results) => {
@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
     }
   })
 })
+
 router.get('/:id', (req, res) => {
   connection.query(
     'SELECT * from Health_insurance WHERE id_insurance=?',
@@ -103,7 +104,6 @@ router.put(
   }
 )
 
-// route for delete insurance
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM Health_insurance WHERE id_insurance = ?',

@@ -1,13 +1,13 @@
 const account = require('./Account')
-const insured = require('./Insured')
 const health_insurance = require('./Health_insurance')
-const specialities = require('./Specialities')
-const pros = require('./Pros')
+const insured = require('./Insured')
+const medical_events = require('./Medical_events')
 const notifications = require('./Notifications')
 const notif_insured = require('./notif_insured')
-const refund = require('./refund')
-const medical_events = require('./Medical_events')
+const pros = require('./Pros')
 const pros_speciality = require('./Pros_speciality')
+const refund = require('./refund')
+const specialities = require('./Specialities')
 
 module.exports = {
   insured,

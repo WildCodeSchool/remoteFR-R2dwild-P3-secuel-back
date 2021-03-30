@@ -1,8 +1,7 @@
 const express = require('express')
-const connection = require('../config')
 const router = express.Router()
 
-//onst { check, validationResult } = require('express-validator')
+const connection = require('../config')
 
 router.get('/', (req, res) => {
   connection.query('SELECT * FROM Pros', [req.params.id], (err, results) => {
@@ -48,7 +47,6 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   const idPro = req.params.id
   const newPro_name = req.body
-
   return connection.query(
     'UPDATE Pros SET ? Where pro_id = ?',
     [newPro_name, idPro],
@@ -86,7 +84,7 @@ router.put('/:id', (req, res) => {
     }
   )
 })
-//delete 
+
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM pros WHERE pro_id = ?',
@@ -101,4 +99,5 @@ router.delete('/:id', (req, res) => {
     }
   )
 })
+
 module.exports = router

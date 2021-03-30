@@ -1,8 +1,8 @@
 const express = require('express')
-const connection = require('../config')
 const router = express.Router()
-
 const { check, validationResult } = require('express-validator')
+
+const connection = require('../config')
 
 router.get('/', (req, res) => {
   connection.query('SELECT * from Account', (err, results) => {
@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
     }
   })
 })
+
 router.get('/:id', (req, res) => {
   connection.query(
     'SELECT * from Account WHERE id_Compte=?',
@@ -59,7 +60,6 @@ router.post(
   }
 )
 
-// route for modification
 router.put(
   '/:id',
   [
@@ -116,7 +116,6 @@ router.put(
   }
 )
 
-// route for delete account
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM Account WHERE id_Compte = ?',

@@ -1,7 +1,7 @@
 const express = require('express')
-const connection = require('../config')
 const router = express.Router()
-//const { check, validationResult } = require('express-validator')
+
+const connection = require('../config')
 
 router.get('/', (req, res) => {
   connection.query(
@@ -34,7 +34,6 @@ router.get('/:id', (req, res) => {
 
 router.post(
   '/',
-
   (req, res) => {
     const {
       notifications_id_Notification,
@@ -64,7 +63,6 @@ router.post(
 router.put('/:id', (req, res) => {
   const idNotifIns = Number(req.params.id)
   const newNotifIns = req.body
-
   return connection.query(
     'UPDATE notif_insured SET ? WHERE id_notif_insured= ?',
     [newNotifIns, idNotifIns],
@@ -75,7 +73,6 @@ router.put('/:id', (req, res) => {
           sql: err2.sql
         })
       }
-
       connection.query(
         'SELECT * FROM notif_insured WHERE id_notif_insured= ?',
         idNotifIns,
@@ -86,7 +83,6 @@ router.put('/:id', (req, res) => {
               sql: err3.sql
             })
           }
-
           const updatedNotifIns = records[0]
           const { ...notif_insured } = updatedNotifIns
           // Get the host + port (localhost:3000) from the request headers
@@ -100,7 +96,7 @@ router.put('/:id', (req, res) => {
     }
   )
 })
-//delete
+
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM notif_insured WHERE id_notif_insured = ?',
