@@ -136,7 +136,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `Elan`.`Pros_Specialty`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `elan`.`Pros_Speciality` (
+CREATE TABLE IF NOT EXISTS `Elan`.`Pros_Speciality` (
   `id_Pros_Speciality` INT NOT NULL AUTO_INCREMENT,
   `pros_pro_id` INT NOT NULL,
   `specialities_id_speciality` INT NOT NULL,
@@ -161,7 +161,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `Elan`.`notif_insured`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `elan`.`notif_insured` (
+CREATE TABLE IF NOT EXISTS `Elan`.`notif_insured` (
   `id_notif_insured` INT NOT NULL AUTO_INCREMENT,
   `notifications_id_Notification` INT NOT NULL,
   `insured_id_Insured` INT NOT NULL,
