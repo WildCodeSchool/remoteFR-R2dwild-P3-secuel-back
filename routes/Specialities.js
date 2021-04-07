@@ -33,24 +33,20 @@ router.get('/:id', (req, res) => {
   )
 })
 
-router.post(
-  '/',
-
-  (req, res) => {
-    const { speciality_name } = req.body
-    return connection.query(
-      'INSERT INTO specialities(speciality_name) VALUES(?)',
-      [speciality_name],
-      err => {
-        if (err) {
-          console.log(err)
-          return res.status(500).send('Error saving speciality')
-        }
-        return res.status(200).send('Successfully saved speciality')
+router.post('/', (req, res) => {
+  const { speciality_name } = req.body
+  return connection.query(
+    'INSERT INTO specialities(speciality_name) VALUES(?)',
+    [speciality_name],
+    err => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send('Error saving speciality')
       }
-    )
-  }
-)
+      return res.status(200).send('Successfully saved speciality')
+    }
+  )
+})
 
 router.put('/:id', (req, res) => {
   const idSpe = req.params.id
@@ -91,17 +87,17 @@ router.put('/:id', (req, res) => {
     }
   )
 })
-//delete 
+//delete
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM specialities WHERE id_speciality = ?',
     [req.params.id],
-    (err) => {
+    err => {
       if (err) {
         console.log(err)
         res.status(500).send('Error deleting data')
       } else {
-        res.status(200).send("Speciality sucessfuly deleted !")
+        res.status(200).send('Speciality sucessfuly deleted !')
       }
     }
   )

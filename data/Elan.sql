@@ -146,12 +146,12 @@ CREATE TABLE IF NOT EXISTS `Elan`.`Pros_Speciality` (
   INDEX `fk_pros_has_specialities_pros1_idx` (`pros_pro_id` ASC) VISIBLE,
   CONSTRAINT `fk_pros_has_specialities_pros1`
     FOREIGN KEY (`pros_pro_id`)
-    REFERENCES `elan`.`pros` (`pro_id`)
+    REFERENCES `Elan`.`pros` (`pro_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_pros_has_specialities_specialities1`
     FOREIGN KEY (`specialities_id_speciality`)
-    REFERENCES `elan`.`specialities` (`id_speciality`)
+    REFERENCES `Elan`.`specialities` (`id_speciality`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

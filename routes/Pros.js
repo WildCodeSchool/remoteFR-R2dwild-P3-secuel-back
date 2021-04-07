@@ -86,17 +86,17 @@ router.put('/:id', (req, res) => {
     }
   )
 })
-//delete 
+//delete
 router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM pros WHERE pro_id = ?',
     [req.params.id],
-    (err) => {
+    err => {
       if (err) {
         console.log(err)
         res.status(500).send('Error deleting data')
       } else {
-        res.status(200).send("Professionnal sucessfuly deleted !")
+        res.status(200).send('Professionnal sucessfuly deleted !')
       }
     }
   )
