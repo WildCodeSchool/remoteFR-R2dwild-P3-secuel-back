@@ -32,34 +32,32 @@ router.get('/:id', (req, res) => {
   )
 })
 
-router.post(
-  '/',
-
-  (req, res) => {
-    const {
+router.post('/', (req, res) => {
+  const {
+    notifications_id_Notification,
+    insured_id_Insured,
+    insured_Account_id_Compte,
+    Status
+  } = req.body
+  return connection.query(
+    `INSERT INTO notif_insured
+    (notifications_id_Notification,insured_id_Insured,insured_Account_id_Compte, Status ) 
+    VALUES(?,?,?,?)`,
+    [
       notifications_id_Notification,
       insured_id_Insured,
       insured_Account_id_Compte,
       Status
-    } = req.body
-    return connection.query(
-      'INSERT INTO notif_insured(id_notif_insured) VALUES(?,?,?,?)',
-      [
-        notifications_id_Notification,
-        insured_id_Insured,
-        insured_Account_id_Compte,
-        Status
-      ],
-      err => {
-        if (err) {
-          console.log(err)
-          return res.status(500).send('Error saving notif notif_insured')
-        }
-        return res.status(200).send('Successfully saved notif_insured')
+    ],
+    err => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send('Error saving notif notif_insured')
       }
-    )
-  }
-)
+      return res.status(200).send('Successfully saved notif_insured')
+    }
+  )
+})
 
 router.put('/:id', (req, res) => {
   const idNotifIns = Number(req.params.id)

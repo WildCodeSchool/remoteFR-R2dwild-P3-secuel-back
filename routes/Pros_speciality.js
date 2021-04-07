@@ -5,7 +5,11 @@ const router = express.Router()
 
 router.get('/', (req, res) => {
   connection.query(
-    'SELECT * FROM Pros_Specialty ps JOIN Pros AS p ON ps.pro_id = p.pro_id JOIN Specialities s ON s.id_speciality = ps.speciality_id',
+    `SELECT * FROM Pros_Speciality ps 
+    JOIN Pros AS p 
+    ON ps.pros_pro_id = p.pro_id 
+    JOIN Specialities s
+    ON s.id_speciality = ps.specialities_id_speciality`,
     (err, results) => {
       if (err) {
         console.log(err)
@@ -33,10 +37,10 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const { pro_id, id_speciality, Status } = req.body
+  const { pros_pro_id, specialities_id_speciality, Status } = req.body
   return connection.query(
-    'INSERT INTO Pros_Specialty(id_Pros_Speciality, pro_id, id_speciality, Status`) VALUES(?, ?, ?)',
-    [pro_id, id_speciality, Status],
+    'INSERT INTO Pros_Speciality (pros_pro_id, specialities_id_speciality, Status) VALUES(?, ?, ?)',
+    [pros_pro_id, specialities_id_speciality, Status],
     err => {
       if (err) {
         console.log(err)
