@@ -146,12 +146,12 @@ CREATE TABLE IF NOT EXISTS `Elan`.`Pros_Speciality` (
   INDEX `fk_pros_has_specialities_pros1_idx` (`pros_pro_id` ASC) VISIBLE,
   CONSTRAINT `fk_pros_has_specialities_pros1`
     FOREIGN KEY (`pros_pro_id`)
-    REFERENCES `Elan`.`pros` (`pro_id`)
+    REFERENCES `Elan`.`Pros` (`pro_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_pros_has_specialities_specialities1`
     FOREIGN KEY (`specialities_id_speciality`)
-    REFERENCES `Elan`.`specialities` (`id_speciality`)
+    REFERENCES `Elan`.`Specialities` (`id_speciality`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -172,12 +172,12 @@ CREATE TABLE IF NOT EXISTS `Elan`.`notif_insured` (
   INDEX `fk_notifications_has_insured_notifications1_idx` (`notifications_id_Notification` ASC) VISIBLE,
   CONSTRAINT `fk_notifications_has_insured_notifications1`
     FOREIGN KEY (`notifications_id_Notification`)
-    REFERENCES `elan`.`notifications` (`id_Notification`)
+    REFERENCES `Elan`.`Notifications` (`id_Notification`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_notifications_has_insured_insured1`
     FOREIGN KEY (`insured_id_Insured` , `insured_Account_id_Compte`)
-    REFERENCES `elan`.`insured` (`id_Insured` , `Account_id_Compte`)
+    REFERENCES `Elan`.`Insured` (`id_Insured` , `Account_id_Compte`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

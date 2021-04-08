@@ -25,6 +25,22 @@ router.get('/:id', (req, res) => {
   })
 })
 
+router.get('/allAccI', (req, res) => {
+  let cpt = req.query.id_Compte
+  connection.query(
+    `SELECT * FROM Insured WHERE Account_id_Compte = ?`
+    [cpt],
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data')
+      } else {
+        res.status(200).json(results)
+      }
+    }
+  )
+})
+
 router.post(
   '/',
   [

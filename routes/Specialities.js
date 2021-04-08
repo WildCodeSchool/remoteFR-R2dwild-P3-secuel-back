@@ -36,7 +36,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   const { speciality_name } = req.body
   return connection.query(
-    'INSERT INTO specialities(speciality_name) VALUES(?)',
+    'INSERT INTO Specialities(speciality_name) VALUES(?)',
     [speciality_name],
     err => {
       if (err) {
@@ -53,7 +53,7 @@ router.put('/:id', (req, res) => {
   const newSpe = req.body
 
   return connection.query(
-    'UPDATE specialities SET ? WHERE id_speciality = ?',
+    'UPDATE Specialities SET ? WHERE id_speciality = ?',
     [newSpe, idSpe],
     err2 => {
       if (err2) {
@@ -64,7 +64,7 @@ router.put('/:id', (req, res) => {
       }
 
       connection.query(
-        'SELECT * FROM specialities WHERE id_speciality = ?',
+        'SELECT * FROM Specialities WHERE id_speciality = ?',
         idSpe,
         (err3, records) => {
           if (err3) {
@@ -90,7 +90,7 @@ router.put('/:id', (req, res) => {
 //delete
 router.delete('/:id', (req, res) => {
   connection.query(
-    'DELETE FROM specialities WHERE id_speciality = ?',
+    'DELETE FROM Specialities WHERE id_speciality = ?',
     [req.params.id],
     err => {
       if (err) {

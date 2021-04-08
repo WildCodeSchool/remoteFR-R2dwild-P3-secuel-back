@@ -27,6 +27,8 @@ router.get('/', (req, res) => {
   )
 })
 
+
+
 // get one medical event with id
 router.get('/:id', (req, res) => {
   connection.query(
