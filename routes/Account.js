@@ -132,24 +132,6 @@ router.delete('/?id', (req, res) => {
   )
 })
 
-// /allQuery?Account_id_Compte=2
-/*router.get('/allQuery', (req, res) => {
- // let { id } = req.query
-  // let cpt = req.query.Account_id_Compte
-  let cpt = ' SELECT * FROM Insured'
-  const cptArray = [];
-  if (req.query.Account_id_Compte) {
-    cpt += ' WHERE Account_id_Compte = ?';
-    cptArray.push(req.query.Account_id_Compte)
-  }
-  connection.query(cpt, cptArray, (err, results) => {
-    if (err) {
-      res.status(500).send(`An error occurred: ${err.message}`);
-    } else {
-      res.json(results);
-    }
-})
-})*/
 router.get('/allQuery', (req, res) => {
   // let { id } = req.query
   // let cpt = req.query.Account_id_Compte
@@ -167,73 +149,33 @@ router.get('/allQuery', (req, res) => {
     }
   )
 })
-/* `SELECT * FROM Insured AS I WHERE Account_id_Compte = ?`,
-    [id],
-    (err, results) => {
-      if (err) {
-        console.log(err)
-        res.status(500).send('Error retrieving data')
-      } else {
-        res.status(200).json(results)
-      }
-    } */
 
 router.get('/alls/:id', (req, res) => {
   // let cpt = req.query.id_Compte
   connection.query(
-    `SELECT * FROM Insured AS I WHERE I.Account_id_Compte = ?`,
+    `SELECT id_Insured, firstname, lastname FROM Insured AS I WHERE I.Account_id_Compte = ?`,
     [req.params.id],
-    (err, Insured) => {
+    (err, insured) => {
       if (err) {
         console.log(err)
         res.status(500).send('Error retrieving data level 1')
       } else {
         connection.query(
-          `SELECT * FROM Account WHERE id_Compte = ?`,
+          `SELECT I.id_Insured, I.firstname, I.lastname, 
+          id_med_event, Date_Event, S.speciality_name, 
+          secu_status, insurance_status 
+          FROM Medical_events AS M 
+          RIGHT JOIN Insured as I
+          ON I.Account_id_Compte = M.Insured_Account_id_Compte
+          JOIN Specialities as S 
+          ON M.Specialities_id_speciality = S.id_speciality 
+          WHERE M.Insured_Account_id_Compte = ?`,
           [req.params.id],
-          (err, Account) => {
+          (err, medical) => {
             if (err) {
-              console.log(err)
               res.status(500).send('Error retrieving data level 2')
             } else {
-              connection.query(
-                `SELECT * FROM Medical_events AS M 
-                JOIN Specialities as S 
-                ON M.Specialities_id_speciality = S.id_speciality 
-                JOIN Insured AS I 
-                ON M.Insured_id_Insured = I.id_Insured 
-                JOIN Account AS A 
-                ON M.Insured_Account_id_Compte = A.id_Compte 
-                JOIN Pros AS P 
-                ON M.Pros_pro_id = P.pro_id
-                WHERE M.Insured_Account_id_Compte = ?`,
-                [req.params.id],
-                (err, Medical) => {
-                  if (err) {
-                    res.status(500).send('Error retrieving data level 3')
-                  } else {
-                    connection.query(
-                      `SELECT * FROM refund AS R
-                      JOIN Medical_events AS M 
-                      ON R.Medical_events_id_Actes = M.id_med_event 
-                      JOIN Health_insurance AS H 
-                      ON R.Health_insurance_id_Mutuelle = H.id_insurance
-                      WHERE M.Insured_Account_id_Compte = ? `,
-                      [req.params.id],
-                      (err, Refund) => {
-                        if (err) {
-                          console.log(err)
-                          res.status(500).send('Error retrieving data level 4')
-                        } else {
-                          res
-                            .status(200)
-                            .json({ Insured, Account, Medical, Refund }) //MAj
-                        }
-                      }
-                    )
-                  }
-                }
-              )
+              res.status(200).json({ insured, medical })
             }
           }
         )
