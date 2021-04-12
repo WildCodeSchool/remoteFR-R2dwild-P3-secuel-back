@@ -117,7 +117,7 @@ router.put(
 )
 
 // route for delete account
-router.delete('/?id', (req, res) => {
+router.delete('/:id', (req, res) => {
   connection.query(
     'DELETE FROM Account WHERE id_Compte = ?',
     [req.params.id],
@@ -127,24 +127,6 @@ router.delete('/?id', (req, res) => {
         res.status(500).send('Error deleting account data')
       } else {
         res.status(200).send('account sucessfuly deleted !')
-      }
-    }
-  )
-})
-
-router.get('/allQuery', (req, res) => {
-  // let { id } = req.query
-  // let cpt = req.query.Account_id_Compte
-  let cpt = req.query.idcpt
-  console.log(cpt)
-  connection.query(
-    `SELECT * FROM Insured WHERE Account_id_Compte = ?`,
-    [cpt],
-    (err, results) => {
-      if (err) {
-        res.status(500).send(`An error occurred: ${err.message}`)
-      } else {
-        res.json(results)
       }
     }
   )
@@ -179,23 +161,6 @@ router.get('/alls/:id', (req, res) => {
             }
           }
         )
-      }
-    }
-  )
-})
-
-router.get('/all/:id/', (req, res) => {
-  // let cpt = req.query.id_Compte
-  connection.query(
-    `SELECT * FROM Insured AS I WHERE I.Account_id_Compte = ?
-    JOIN `,
-    [req.params.id],
-    (err, results) => {
-      if (err) {
-        console.log(err)
-        res.status(500).send('Error retrieving data')
-      } else {
-        res.status(200).json(results)
       }
     }
   )
