@@ -109,4 +109,61 @@ router.delete('/:id', (req, res) => {
   )
 })
 
+router.get('/stats/:id', (req, res) => {
+  connection.query(
+    `SELECT  S.speciality_name,
+    ROUND(SUM(ME.amount_Event),2)
+    FROM Medical_events AS ME
+    JOIN Specialities as S
+    ON S.id_speciality = ME.Specialities_id_speciality
+    WHERE ME.Insured_Account_id_Compte =?
+    GROUP BY ME.Specialities_id_speciality`,
+    [req.params.id],
+    (err, totalCost) => {
+      if (err) {
+        res.status(500).send('retreiving data Failedat LVL1')
+      } else {
+        // Calcul ofrefund secu
+        connection.query(
+          `SELECT S.speciality_name,  
+          ROUND(SUM(R.Amount_Refund),2)
+          FROM refund AS R
+          JOIN Medical_events AS ME
+          ON ME.id_med_event = R.Medical_events_id_Actes
+          JOIN Specialities as S
+          ON S.id_speciality = ME.Specialities_id_speciality
+          WHERE ME.Insured_Account_id_Compte =? AND R.Health_insurance_id_Mutuelle = 1
+          GROUP BY ME.Specialities_id_speciality`,
+          [req.params.id],
+          (err, refundSecu) => {
+            if (err) {
+              res.status(500).send('retreiving data Failed at LVL 2')
+            } else {
+              connection.query(
+                `SELECT S.speciality_name,  
+                ROUND(SUM(R.Amount_Refund),2)
+                FROM refund AS R
+                JOIN Medical_events AS ME
+                ON ME.id_med_event = R.Medical_events_id_Actes
+                JOIN Specialities as S
+                ON S.id_speciality = ME.Specialities_id_speciality
+                WHERE ME.Insured_Account_id_Compte =? AND R.Health_insurance_id_Mutuelle != 1
+                GROUP BY ME.Specialities_id_speciality`,
+                [req.params.id],
+                (err, refundMutu) => {
+                  if (err) {
+                    res.status(500).send('retreiving data Failed at LVL 3')
+                  } else {
+                    res.status(200).send({ totalCost, refundSecu, refundMutu })
+                  }
+                }
+              )
+            }
+          }
+        )
+      }
+    }
+  )
+})
+
 module.exports = router
