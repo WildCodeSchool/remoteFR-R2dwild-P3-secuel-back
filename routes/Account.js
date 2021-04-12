@@ -132,4 +132,38 @@ router.delete('/:id', (req, res) => {
   )
 })
 
+router.get('/alls/:id', (req, res) => {
+  // let cpt = req.query.id_Compte
+  connection.query(
+    `SELECT id_Insured, firstname, lastname FROM Insured AS I WHERE I.Account_id_Compte = ?`,
+    [req.params.id],
+    (err, insured) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data level 1')
+      } else {
+        connection.query(
+          `SELECT I.id_Insured, I.firstname, I.lastname, 
+          id_med_event, Date_Event, S.speciality_name, 
+          secu_status, insurance_status 
+          FROM Medical_events AS M 
+          RIGHT JOIN Insured as I
+          ON I.Account_id_Compte = M.Insured_Account_id_Compte
+          JOIN Specialities as S 
+          ON M.Specialities_id_speciality = S.id_speciality 
+          WHERE M.Insured_Account_id_Compte = ?`,
+          [req.params.id],
+          (err, medical) => {
+            if (err) {
+              res.status(500).send('Error retrieving data level 2')
+            } else {
+              res.status(200).json({ insured, medical })
+            }
+          }
+        )
+      }
+    }
+  )
+})
+
 module.exports = router

@@ -52,6 +52,43 @@ router.get('/:id', (req, res) => {
   )
 })
 
+router.get('/event/:id', (req, res) => {
+  connection.query(
+    `SELECT M.Date_Event,
+    S.speciality_name,
+    P.pro_name,
+    M.amount_Event,
+    I.social_security_num,
+    I.firstname,
+    I.lastname,
+    R.Amount_Refund,
+    H.insurance_name,
+    M.id_med_event
+
+        FROM Medical_events AS M 
+    JOIN Specialities as S 
+    ON M.Specialities_id_speciality = S.id_speciality 
+    JOIN Insured AS I 
+    ON M.Insured_id_Insured = I.id_Insured 
+    JOIN Pros AS P 
+    ON M.Pros_pro_id = P.pro_id 
+    JOIN refund as R
+    ON R.Medical_events_id_Actes = M.id_med_event
+    JOIN Health_insurance AS H
+    ON H.id_insurance = R.Health_insurance_id_Mutuelle
+    WHERE id_med_event = ?`,
+    [req.params.id],
+    (err, event) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data Medical_events_ID')
+      } else {
+        res.status(200).json({ event })
+      }
+    }
+  )
+})
+
 // post new Medicalevent
 router.post('/', (req, res) => {
   const {

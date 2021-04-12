@@ -5,24 +5,71 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator')
 
 router.get('/', (req, res) => {
-  connection.query('SELECT * from Insured', (err, results) => {
-    if (err) {
-      console.log(err)
-      res.status(500).send('Error retrieving data')
-    } else {
-      res.status(200).json(results)
+  connection.query(
+    'SELECT *, DATE_FORMAT(birth_date, "%d/%m/%Y") as bd from Insured',
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data')
+      } else {
+        res.status(200).json(results)
+      }
     }
-  })
+  )
 })
 router.get('/:id', (req, res) => {
-  connection.query('SELECT * from Insured', [req.params.id], (err, results) => {
-    if (err) {
-      console.log(err)
-      res.status(500).send('Error retrieving data')
-    } else {
-      res.status(200).json(results)
+  connection.query(
+    'SELECT *, DATE_FORMAT(birth_date, "%d/%m/%Y") as bd from Insured WHERE id_Insured=?',
+    [req.params.id],
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data')
+      } else {
+        res.status(200).json(results)
+      }
     }
-  })
+  )
+})
+
+router.get('/allAccI', (req, res) => {
+  let cpt = req.query.id_Compte
+  connection.query(
+    `SELECT * FROM Insured WHERE Account_id_Compte = ?`[cpt],
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data')
+      } else {
+        res.status(200).json(results)
+      }
+    }
+  )
+})
+
+router.get('/insActe/:id', (req, res) => {
+  // let cpt = req.query.id_Compte
+  connection.query(
+    `SELECT I.id_Insured, I.firstname, I.lastname, 
+    id_med_event, Date_Event, 
+    M.secu_status, M.insurance_status, 
+    S.speciality_name
+    FROM Insured AS I 
+    LEFT JOIN Medical_events AS M
+    ON M.Insured_id_Insured = I.id_Insured
+    LEFT JOIN Specialities AS S
+    ON S.id_speciality = M.Specialities_id_speciality
+    WHERE I.Account_id_Compte = ?`,
+    [req.params.id],
+    (err, insured) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data level 1')
+      } else {
+        res.status(200).json({ insured })
+      }
+    }
+  )
 })
 
 router.post(
