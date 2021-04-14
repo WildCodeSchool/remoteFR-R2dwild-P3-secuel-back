@@ -5,7 +5,8 @@ const router = express.Router()
 
 router.get('/', (req, res) => {
   connection.query(
-    'SELECT * FROM notif_insured AS ni JOIN Insured AS i ON ni.id_notif_insured= i.id_insured JOIN Notifications AS n ON ni.notifications_id_Notification = n.id_Notification ',
+    'SELECT * FROM notif_insured AS ni WHERE ni.id_notif_insured = ? ',
+    [req.params.id],
     (err, results) => {
       if (err) {
         console.log(err)
@@ -19,7 +20,13 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM notif_insured AS ni WHERE ni.id_notif_insured = ? ',
+    `SELECT i.color, i.lastname,i.firstname, ni.notifications_id_Notification, n.type, n.Message 
+    FROM notif_insured AS ni
+    JOIN Insured AS i 
+    ON ni.insured_id_Insured= i.id_insured 
+    JOIN Notifications AS n 
+    ON ni.notifications_id_Notification = n.id_Notification
+    WHERE i.Account_id_Compte=?`,
     [req.params.id],
     (err, results) => {
       if (err) {
