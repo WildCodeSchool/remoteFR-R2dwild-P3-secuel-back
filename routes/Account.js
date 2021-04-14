@@ -144,11 +144,11 @@ router.get('/alls/:id', (req, res) => {
       } else {
         connection.query(
           `SELECT I.id_Insured, I.firstname, I.lastname, 
-          id_med_event, Date_Event, S.speciality_name, 
-          secu_status, insurance_status 
-          FROM Medical_events AS M 
-          RIGHT JOIN Insured as I
-          ON I.Account_id_Compte = M.Insured_Account_id_Compte
+          M.id_med_event, M.Date_Event, S.speciality_name, 
+          M.secu_status, M.insurance_status 
+          FROM Insured as I
+          JOIN Medical_events AS M
+          ON I.id_Insured = M.Insured_id_Insured
           JOIN Specialities as S 
           ON M.Specialities_id_speciality = S.id_speciality 
           WHERE M.Insured_Account_id_Compte = ?`,
@@ -157,7 +157,17 @@ router.get('/alls/:id', (req, res) => {
             if (err) {
               res.status(500).send('Error retrieving data level 2')
             } else {
-              res.status(200).json({ insured, medical })
+              const obj = {
+                insured: insured.map(insu => {
+                  return {
+                    ...insu,
+                    medical: medical.filter(
+                      med => med.id_Insured === insu.id_Insured
+                    )
+                  }
+                })
+              }
+              res.status(200).json(obj)
             }
           }
         )
