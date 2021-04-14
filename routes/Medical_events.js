@@ -39,6 +39,8 @@ router.get('/:id', (req, res) => {
     ON M.Insured_Account_id_Compte = A.id_Compte 
     JOIN Pros AS P 
     ON M.Pros_pro_id = P.pro_id 
+    JOIN refund as R
+    ON R.Medical_events_id_Actes = id_med_event
     WHERE id_med_event = ?`,
     [req.params.id],
     (err, results) => {
@@ -46,7 +48,11 @@ router.get('/:id', (req, res) => {
         console.log(err)
         res.status(500).send('Error retrieving data Medical_events_ID')
       } else {
-        res.status(200).json(results)
+        const obj = {
+          ...results[0],
+          refund_insurance: results[1].Amount_Refund
+        }
+        res.status(200).json(obj)
       }
     }
   )
