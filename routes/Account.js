@@ -135,7 +135,7 @@ router.delete('/:id', (req, res) => {
 router.get('/alls/:id', (req, res) => {
   // let cpt = req.query.id_Compte
   connection.query(
-    `SELECT id_Insured, firstname, lastname FROM Insured AS I WHERE I.Account_id_Compte = ?`,
+    `SELECT id_Insured, firstname, lastname, color FROM Insured AS I WHERE I.Account_id_Compte = ?`,
     [req.params.id],
     (err, insured) => {
       if (err) {
