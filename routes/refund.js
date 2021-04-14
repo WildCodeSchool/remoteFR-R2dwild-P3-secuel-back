@@ -117,7 +117,8 @@ router.get('/stats/:id', (req, res) => {
     JOIN Specialities as S
     ON S.id_speciality = ME.Specialities_id_speciality
     WHERE ME.Insured_Account_id_Compte =?
-    GROUP BY ME.Specialities_id_speciality`,
+    GROUP BY ME.Specialities_id_speciality
+    ORDER BY S.speciality_name`,
     [req.params.id],
     (err, totalCost) => {
       if (err) {
@@ -133,7 +134,8 @@ router.get('/stats/:id', (req, res) => {
           JOIN Specialities as S
           ON S.id_speciality = ME.Specialities_id_speciality
           WHERE ME.Insured_Account_id_Compte =? AND R.Health_insurance_id_Mutuelle = 1
-          GROUP BY ME.Specialities_id_speciality`,
+          GROUP BY ME.Specialities_id_speciality
+          ORDER BY S.speciality_name`,
           [req.params.id],
           (err, refundSecu) => {
             if (err) {
@@ -148,7 +150,8 @@ router.get('/stats/:id', (req, res) => {
                 JOIN Specialities as S
                 ON S.id_speciality = ME.Specialities_id_speciality
                 WHERE ME.Insured_Account_id_Compte =? AND R.Health_insurance_id_Mutuelle != 1
-                GROUP BY ME.Specialities_id_speciality`,
+                GROUP BY ME.Specialities_id_speciality
+                ORDER BY S.speciality_name`,
                 [req.params.id],
                 (err, refundMutu) => {
                   if (err) {
