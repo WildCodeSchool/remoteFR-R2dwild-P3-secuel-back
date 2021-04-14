@@ -50,7 +50,7 @@ router.get('/allAccI', (req, res) => {
 router.get('/insActe/:id', (req, res) => {
   // let cpt = req.query.id_Compte
   connection.query(
-    `SELECT I.id_Insured, I.firstname, I.lastname, 
+    `SELECT I.id_Insured, I.firstname, I.lastname,
     id_med_event, Date_Event, 
     M.secu_status, M.insurance_status, 
     S.speciality_name
@@ -96,10 +96,11 @@ router.post(
       tel,
       Password,
       birth_date,
+      color,
       Account_id_Compte
     } = req.body
     return connection.query(
-      'INSERT INTO Insured(lastname, firstname, social_security_num, email, tel, Password, birth_date, Account_id_Compte) VALUES(?,?,?,?,?,?,?,?)',
+      `INSERT INTO Insured(lastname, firstname, social_security_num, email, tel, Password, birth_date, color, Account_id_Compte) VALUES(?,?,?,?,?,?,?,?,?)`,
       [
         lastname,
         firstname,
@@ -108,6 +109,7 @@ router.post(
         tel,
         Password,
         birth_date,
+        color,
         Account_id_Compte
       ],
       err => {
@@ -184,7 +186,15 @@ router.put(
 // route for delete insured
 router.delete('/:id', (req, res) => {
   connection.query(
-    'DELETE FROM Insured WHERE id_Insured = ?',
+    `DELETE Insured, Medical_events FROM Insured 
+    INNER JOIN Medical_events
+    ON 
+    WHERE id_Insured = ?`,
+    /*DELETE I.* , ME.*
+    FROM Insured AS I
+    JOIN Medical_events AS ME
+    ON  ME.Insured_id_Insured = I.id_Insured
+    WHERE id_Insured = ?*/
     [req.params.id],
     err => {
       if (err) {

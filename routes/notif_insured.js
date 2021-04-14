@@ -3,9 +3,16 @@ const connection = require('../config')
 const router = express.Router()
 //const { check, validationResult } = require('express-validator')
 
-router.get('/', (req, res) => {
+router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM notif_insured AS ni JOIN Insured AS i ON ni.id_notif_insured= i.id_insured JOIN Notifications AS n ON ni.notifications_id_Notification = n.id_Notification ',
+    `SELECT i.color, ni.notifications_id_Notification, n.type, n.Message 
+    FROM notif_insured AS ni
+    JOIN Insured AS i 
+    ON ni.insured_id_Insured= i.id_insured 
+    JOIN Notifications AS n 
+    ON ni.notifications_id_Notification = n.id_Notification
+    WHERE i.Account_id_Compte=? `,
+    [req.params.id],
     (err, results) => {
       if (err) {
         console.log(err)
@@ -17,19 +24,15 @@ router.get('/', (req, res) => {
   )
 })
 
-router.get('/:id', (req, res) => {
-  connection.query(
-    'SELECT * FROM notif_insured AS ni WHERE ni.id_notif_insured = ? ',
-    [req.params.id],
-    (err, results) => {
-      if (err) {
-        console.log(err)
-        res.status(500).send('Error retrieving data')
-      } else {
-        res.status(200).json(results)
-      }
+router.get('/', (req, res) => {
+  connection.query('SELECT * FROM notif_insured ', (err, results) => {
+    if (err) {
+      console.log(err)
+      res.status(500).send('Error retrieving data')
+    } else {
+      res.status(200).json(results)
     }
-  )
+  })
 })
 
 router.post('/', (req, res) => {
