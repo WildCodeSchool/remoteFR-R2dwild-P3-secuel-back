@@ -48,7 +48,11 @@ router.get('/:id', (req, res) => {
         console.log(err)
         res.status(500).send('Error retrieving data Medical_events_ID')
       } else {
-        res.status(200).json(results)
+        const obj = {
+          ...results[0],
+          refund_insurance: results[1].Amount_Refund
+        }
+        res.status(200).json(obj)
       }
     }
   )
