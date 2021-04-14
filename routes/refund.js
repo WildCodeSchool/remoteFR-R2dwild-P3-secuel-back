@@ -112,7 +112,7 @@ router.delete('/:id', (req, res) => {
 router.get('/stats/:id', (req, res) => {
   connection.query(
     `SELECT  S.speciality_name,
-    ROUND(SUM(ME.amount_Event),2)
+    ROUND(SUM(ME.amount_Event),2) AS AmountPaid
     FROM Medical_events AS ME
     JOIN Specialities as S
     ON S.id_speciality = ME.Specialities_id_speciality
@@ -126,7 +126,7 @@ router.get('/stats/:id', (req, res) => {
         // Calcul ofrefund secu
         connection.query(
           `SELECT S.speciality_name,  
-          ROUND(SUM(R.Amount_Refund),2)
+          ROUND(SUM(R.Amount_Refund),2) AS RefundSecu
           FROM refund AS R
           JOIN Medical_events AS ME
           ON ME.id_med_event = R.Medical_events_id_Actes
@@ -141,7 +141,7 @@ router.get('/stats/:id', (req, res) => {
             } else {
               connection.query(
                 `SELECT S.speciality_name,  
-                ROUND(SUM(R.Amount_Refund),2)
+                ROUND(SUM(R.Amount_Refund),2) As MutuRefund
                 FROM refund AS R
                 JOIN Medical_events AS ME
                 ON ME.id_med_event = R.Medical_events_id_Actes

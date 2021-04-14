@@ -151,7 +151,8 @@ router.get('/alls/:id', (req, res) => {
           ON I.Account_id_Compte = M.Insured_Account_id_Compte
           JOIN Specialities as S 
           ON M.Specialities_id_speciality = S.id_speciality 
-          WHERE M.Insured_Account_id_Compte = ?`,
+          WHERE M.Insured_Account_id_Compte = ?
+          Order by I.id_Insured`,
           [req.params.id],
           (err, medical) => {
             if (err) {
