@@ -186,10 +186,10 @@ router.put(
 // route for delete insured
 router.delete('/:id', (req, res) => {
   connection.query(
-    `DELETE Insured, Medical_events FROM Insured 
+    `DELETE Insured, Medical_events FROM Insured as i  
     INNER JOIN Medical_events
-    ON 
-    WHERE id_Insured = ?`,
+    ON Insured_id_Insured = i.id_Insured
+    WHERE i.id_Insured = ?`,
     /*DELETE I.* , ME.*
     FROM Insured AS I
     JOIN Medical_events AS ME
