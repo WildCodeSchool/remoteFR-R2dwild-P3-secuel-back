@@ -32,10 +32,10 @@ router.get('/:id', (req, res) => {
 router.post(
   '/',
   [
-    check('Account_name').isLength({ min: 5 }),
-    // account name must be at least 8 chars long
-    check('Password').isLength({ min: 6 }),
-    // let's assume a password should be 10 chars long
+    check('Account_name').isLength({ min: 2 }),
+    // account name must be at least 2 chars long
+    check('Password').isLength({ min: 10 }),
+    // let's assume a password should be 6 chars long
     check('Login').isEmail()
     // to check it's really an email adress
   ],
@@ -63,7 +63,7 @@ router.post(
 router.put(
   '/:id',
   [
-    check('Account_name').isLength({ min: 8 }),
+    check('Account_name').isLength({ min: 2 }),
     check('Password').isLength({ min: 10 }),
     check('Login').isEmail()
   ],
