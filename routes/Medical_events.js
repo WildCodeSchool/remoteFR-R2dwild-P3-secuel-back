@@ -14,6 +14,29 @@ router.get('/', (req, res) => {
     JOIN Account AS A 
     ON M.Insured_Account_id_Compte = A.id_Compte 
     JOIN Pros AS P 
+    ON M.Pros_pro_id = P.pro_id`,
+    [req.params.id],
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data table Medical_events')
+      } else {
+        res.status(200).json(results)
+      }
+    }
+  )
+})
+
+router.get('/notif', (req, res) => {
+  connection.query(
+    `SELECT * FROM Medical_events AS M 
+    JOIN Specialities as S 
+    ON M.Specialities_id_speciality = S.id_speciality 
+    JOIN Insured AS I 
+    ON M.Insured_id_Insured = I.id_Insured 
+    JOIN Account AS A 
+    ON M.Insured_Account_id_Compte = A.id_Compte 
+    JOIN Pros AS P 
     ON M.Pros_pro_id = P.pro_id
     JOIN refund as R
     ON R.Medical_events_id_Actes = id_med_event
