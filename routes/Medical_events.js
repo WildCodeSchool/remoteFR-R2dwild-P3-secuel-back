@@ -14,7 +14,12 @@ router.get('/', (req, res) => {
     JOIN Account AS A 
     ON M.Insured_Account_id_Compte = A.id_Compte 
     JOIN Pros AS P 
-    ON M.Pros_pro_id = P.pro_id`,
+    ON M.Pros_pro_id = P.pro_id
+    JOIN refund as R
+    ON R.Medical_events_id_Actes = id_med_event
+    JOIN Health_insurance as H
+    ON R.Health_insurance_id_Mutuelle = H.id_insurance
+    ORDER BY R.Date_Refund DESC`,
     [req.params.id],
     (err, results) => {
       if (err) {
