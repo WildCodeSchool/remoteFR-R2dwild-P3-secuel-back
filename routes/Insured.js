@@ -77,7 +77,7 @@ router.post(
   [
     check('lastname').isLength({ min: 3 }),
     check('firstname').isLength({ min: 3 }),
-    check('social_security_num').isLength({ min: 3 }),
+    check('social_security_num').isLength({ min: 13 }),
     check('email').isEmail(),
     check('tel').isLength({ min: 10 }),
     check('Password').isLength({ min: 10 }),
@@ -124,9 +124,9 @@ router.post(
 router.put(
   '/:id',
   [
-    check('lastname').isLength({ min: 3 }),
-    check('firstname').isLength({ min: 3 }),
-    check('social_security_num').isLength({ min: 3 }),
+    check('lastname').isLength({ min: 2 }),
+    check('firstname').isLength({ min: 2 }),
+    check('social_security_num').isLength({ min: 13 }),
     check('email').isEmail(),
     check('tel').isLength({ min: 10 }),
     check('Password').isLength({ min: 10 }),
