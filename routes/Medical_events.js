@@ -85,6 +85,21 @@ router.get('/:id', (req, res) => {
     }
   )
 })
+router.get('/modif/:id', (req, res) => {
+  connection.query(
+    `SELECT * FROM Medical_eventsi
+    WHERE id_med_event = ? `,
+    [req.params.id],
+    (err, results) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error retrieving data')
+      } else {
+        res.status(200).json(results)
+      }
+    }
+  )
+})
 
 router.get('/event/:id', (req, res) => {
   connection.query(
