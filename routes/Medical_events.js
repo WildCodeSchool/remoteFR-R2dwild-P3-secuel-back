@@ -56,7 +56,7 @@ router.get('/notif', (req, res) => {
 })
 
 // get one medical event with id
-router.get('/modif/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   connection.query(
     `SELECT * FROM Medical_events AS M 
     JOIN Specialities as S 
