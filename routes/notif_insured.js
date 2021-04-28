@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/:id', (req, res) => {
   connection.query(
-    `SELECT i.color, ni.notifications_id_Notification, n.type, n.Message 
+    `SELECT i.color, ni.notifications_id_Notification, n.type, n.Message, i.lastname, i.firstname 
     FROM notif_insured AS ni
     JOIN Insured AS i 
     ON ni.insured_id_Insured= i.id_insured 
