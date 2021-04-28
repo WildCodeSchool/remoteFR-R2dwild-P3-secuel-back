@@ -98,8 +98,7 @@ router.get('/event/:id', (req, res) => {
     R.Amount_Refund,
     H.insurance_name,
     M.id_med_event
-
-        FROM Medical_events AS M 
+    FROM Medical_events AS M 
     JOIN Specialities as S 
     ON M.Specialities_id_speciality = S.id_speciality 
     JOIN Insured AS I 
