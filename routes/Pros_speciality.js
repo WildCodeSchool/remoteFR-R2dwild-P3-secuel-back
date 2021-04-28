@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM Pros_Specialty as ps WHERE ps.id_Pros_Speciality = ? ',
+    'SELECT * FROM Pros_Speciality as ps WHERE ps.id_Pros_Speciality = ? ',
     [req.params.id],
     (err, results) => {
       if (err) {
@@ -56,18 +56,23 @@ router.put('/:id', (req, res) => {
   const newProSpe = req.body
 
   return connection.query(
-    'UPDATE Pros_Specialty SET ? WHERE id_Pros_Speciality = ?',
+    'UPDATE Pros_Speciality SET ? WHERE id_Pros_Speciality = ?',
     [newProSpe, idProSpe],
-    err2 => {
-      if (err2) {
+    err => {
+      if (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+          return res.status(409).json({
+            error: 'Pros name already exists'
+          })
+        }
         return res.status(500).json({
-          error: err2.message,
-          sql: err2.sql
+          error: err.message,
+          sql: err.sql
         })
       }
 
       return connection.query(
-        'SELECT * FROM Pros_Specialty  WHERE speciality_id = ?',
+        'SELECT * FROM Pros_Speciality  WHERE id_Pros_Speciality= ?',
         idProSpe,
         (err3, records) => {
           if (err3) {
