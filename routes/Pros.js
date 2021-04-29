@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   connection.query(
-    'SELECT * FROM pros WHERE pro_id = ?',
+    'SELECT * FROM Pros WHERE pro_id = ?',
     [req.params.id],
     (err, results) => {
       if (err) {
